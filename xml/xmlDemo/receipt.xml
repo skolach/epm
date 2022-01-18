@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- <!DOCTYPE DOCUMENT [
+<!ELEMENT DOCUMENT (invoice) >
+...
+]> -->
+<tc:invoice xmlns:tc="http://telecom-company.com" tc:type="bill">
+	<from>ABC TELECOM, Inc.</from>
+	<to>John Smith</to>
+	<![CDATA[ 
+	<valid>
+		<date type="from">16 May 1999</date>
+		<date type="to">15 Jun 1999</date>
+	</valid> ]]>
+	<description>Local Phone Service</description>
+	<valid>
+		<date type="from">16 May 1999</date>
+		<date type="to">15 Jun 1999</date>
+	</valid>
+	<amount>$50.00</amount>
+	<taxRate>6</taxRate>
+	<totalDue>$53.00</totalDue>
+	<quotation text='He said. "Not that!"'/>
+	
+	<letter>Dear <name>Tomas</name>!
+	...
+	</letter>
+	<test xmlns:a="namespace A" xmlns:b="namespace b">
+		<a:tag>a text</a:tag>
+		<b:tag>a text</b:tag>
+	</test> 
+	
+	<name>XML.
+	Greet language.</name>
+	
+</tc:invoice>

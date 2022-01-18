@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<test xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="test_restrictions.xsd">
+	<id>0</id>
+	<title>title</title>
+	<no>0x123F</no>
+	<no>0x231F</no>
+	<no>0x312F</no>
+	<!-- <no>0x123Q</no> --> <!-- Error -->
+</test>

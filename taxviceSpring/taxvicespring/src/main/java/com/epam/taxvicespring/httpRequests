@@ -1,0 +1,23 @@
+GET http://localhost:8080/user http/1.1
+
+###
+
+GET http://localhost:8080/user/11 HTTP/1.1
+
+###
+
+POST http://localhost:8080/user HTTP/1.1
+content-type: application/json
+
+{
+    "id": null,
+    "isAdmin": false,
+    "login": "RestUser",
+    "password": "d41d8cd98f00b204e9800998ecf8427e",
+    "name": "RestUser",
+    "discount": 99
+}
+
+###
+
+DELETE http://localhost:8080/user/7 HTTP/1.1

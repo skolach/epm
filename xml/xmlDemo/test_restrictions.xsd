@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:element name="test">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="id" type="xs:int"/>
+				<xs:element name="title" type="xs:string"/>
+				<xs:element name="no" type="HexString" maxOccurs="3"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:simpleType name="Id">
+		<xs:restriction base="xs:int">
+			<xs:minInclusive value="1"/>
+			<xs:maxInclusive value="10000"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Title">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Java"/>
+			<xs:enumeration value="C++"/>
+			<xs:enumeration value="Cobol"/>
+			<xs:enumeration value="SQL"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="HexString">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="0[xX][\dA-F]+"/>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

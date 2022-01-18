@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema">
+	<element name="book">
+		<complexType>
+			<sequence>
+				<element name="id">
+					<simpleType>
+						<restriction base="int">
+							<minInclusive value="0" />
+						</restriction>
+					</simpleType>
+				</element>
+				<element name="name" type="token" />
+				<element name="genre" maxOccurs="unbounded">
+					<simpleType>
+						<restriction base="string">
+							<enumeration value="action" />
+							<enumeration value="horror" />
+							<enumeration value="love novell" />
+						</restriction>
+					</simpleType>
+				</element>
+				<element name="address">
+					<complexType>
+						<choice>
+							<element name="from" type="token" minOccurs="0" />
+							<sequence>
+								<element name="to" type="token" />
+								<element name="copy" type="token" />
+							</sequence>
+						</choice>
+					</complexType>
+				</element>
+			</sequence>
+		</complexType>
+	</element>
+
+
+	<complexType name="Address">
+	</complexType>
+
+</schema>

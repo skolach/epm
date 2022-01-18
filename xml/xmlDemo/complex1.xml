@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tns:book xmlns:tns="http://epam.com/test"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://epam.com/test complex.xsd " id="5">
+	<tns:name>token</tns:name>
+	<tns:ganre>horror</tns:ganre>
+	<tns:from></tns:from>
+</tns:book>
+<price c="ua">126</price>

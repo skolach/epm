@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<book xmlns="http://xmldemo.trining.epam.com" 
+	xmlns:ps="http://epam.com/trining/xmldemo/" 
+	type="sdkgjh">
+	<name>&lt;XML&gt;</name>
+	<description>
+		<![CDATA[<book xmlns="http://xmldemo.trining.epam.com" 
+	xmlns:ps="http://epam.com/trining/xmldemo/" 
+	type="sdkgjh">
+	<name></name>
+	<description>
+		
+	</description>
+</book>]]>
+	</description>
+</book>

@@ -1,0 +1,188 @@
+package ua.kharkov.knure.dkolesnikov.st3example.controller.apache;
+
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Iterator;
+
+import javax.xml.XMLConstants;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
+
+import org.jdom.Document;
+import org.jdom.Element;
+import org.jdom.JDOMException;
+import org.jdom.Namespace;
+import org.jdom.input.SAXBuilder;
+import org.jdom.output.Format;
+import org.jdom.output.XMLOutputter;
+import org.xml.sax.SAXException;
+
+import ua.kharkov.knure.dkolesnikov.st3example.constants.Constants;
+import ua.kharkov.knure.dkolesnikov.st3example.constants.XML;
+import ua.kharkov.knure.dkolesnikov.st3example.entity.Answer;
+import ua.kharkov.knure.dkolesnikov.st3example.entity.Question;
+import ua.kharkov.knure.dkolesnikov.st3example.entity.Test;
+
+/**
+ * Controller for JDOM parser. WARNING!!! To use functionality from this class
+ * place jdom.jar and xercesImpl.jar to classpath of this project.
+ * 
+ * @author D.Kolesnikov
+ * 
+ */
+public class JDOMController {
+
+	private String xmlFileName;
+
+	private Test test; // <-- container
+
+	public JDOMController(String xmlFileName) {
+		this.xmlFileName = xmlFileName;
+	}
+
+	public Test getTest() {
+		return test;
+	}
+
+	/**
+	 * Parses XML document with JDOM (based on XERCES SAX parser).
+	 * 
+	 * @param validate
+	 *            If true validate XML document against its XML schema.
+	 * @throws JDOMException
+	 */
+	public void parse(boolean validate) throws ParserConfigurationException,
+			SAXException, IOException, JDOMException {
+
+		// get builder (and set validation if it is necessary)
+		SAXBuilder builder;
+		if (validate) {
+		
+			// here we set underlying parser validating
+			// by default JDOM uses the internal JAXP implementation of SAX parser as an engine
+			// but this parser cannot be setup as validating against XSD with JDOM means
+			// so to get validating capability we use the external XERCES SAX parser
+			builder = new SAXBuilder(Constants.CLASS__XERCES_SAX_PARSER, true);
+
+			// this line turns on schema validation for external XERCES parser
+			builder.setFeature(Constants.FEATURE__TURN_SCHEMA_VALIDATION_ON, true);
+		} else
+			builder = new SAXBuilder();
+
+		// parse
+		Document document = builder.build(xmlFileName);
+
+		// process with JDOM
+		Element root = document.getRootElement();
+		test = new Test();
+
+		Iterator<?> qIterator = root.getChildren().iterator();
+		while (qIterator.hasNext()) {
+			Element qElement = (Element) qIterator.next();
+
+			Question question = new Question();
+			question.setQuestionText(
+					qElement.getChildText(XML.QUESTION_TEXT.value()));
+
+			Iterator<?> aIterator = 
+					qElement.getChildren(XML.ANSWER.value()).iterator();
+			
+			while (aIterator.hasNext()) {
+				Element aElement = (Element) aIterator.next();
+
+				Answer answer = new Answer();
+				answer.setContent(aElement.getText());
+				answer.setCorrect(Boolean.valueOf(
+						aElement.getAttributeValue(XML.CORRECT.value())));
+
+				question.getAnswers().add(answer);
+			}
+			test.getQuestions().add(question);
+		}
+		// at this point we have filled Test object
+	}
+
+	/**
+	 * Saves Test object in XML file.
+	 * 
+	 * @param test
+	 *            Test object to be saved.
+	 * @param xmlFileName
+	 *            Output xml file name.
+	 */
+	public static void saveXML(Test test, String xmlFileName)
+			throws ParserConfigurationException, FileNotFoundException,
+			IOException {
+
+		Element root = new Element(XML.TEST.value(), Constants.MY_NS__PREFIX,
+				Constants.MY_NS__URI);
+
+		for (Question question : test.getQuestions()) {
+			Element qElement = new Element(XML.QUESTION.value());
+
+			Element qtElement = new Element(XML.QUESTION_TEXT.value());
+			qtElement.setText(question.getQuestionText());
+			qElement.addContent(qtElement);
+
+			for (Answer answer : question.getAnswers()) {
+				Element aElement = new Element(XML.ANSWER.value());
+
+				aElement.setText(answer.getContent());
+				if (answer.isCorrect())
+					aElement.setAttribute(XML.CORRECT.value(),
+							String.valueOf(answer.isCorrect()));
+
+				qElement.addContent(aElement);
+			}
+			root.addContent(qElement);
+		}
+
+		// obtain schema instance namespace
+		Namespace xsi = Namespace.getNamespace(Constants.XSI_SPACE__PREFIX,
+				XMLConstants.W3C_XML_SCHEMA_INSTANCE_NS_URI);
+
+		// set xsi namespace
+		root.setAttribute(Constants.SCHEMA_LOCATION__ATTR_NAME,
+				Constants.SCHEMA_LOCATION__URI, xsi);
+
+		XMLOutputter outputter = new XMLOutputter(Format.getPrettyFormat());
+		outputter.output(new Document(root), new FileOutputStream(xmlFileName));
+	}
+
+	public static void main(String[] args) throws ParserConfigurationException,
+			SAXException, IOException, TransformerException, JDOMException {
+
+		// try to parse NOT valid XML document (failed)
+		JDOMController jdomContr = new JDOMController(Constants.INVALID_XML_FILE);
+		try {
+			jdomContr.parse(true); // <-- parse with validation (failed)
+		} catch (Exception ex) {
+			System.err.println("====================================");
+			System.err.println("XML not valid\n" + ex.getMessage());
+			System.err.println("Test object --> " + jdomContr.getTest());
+			System.err.println("====================================");
+		}
+
+		// try to parse NOT valid XML document with validation off (success)
+		jdomContr.parse(false); // <-- parse with validation off (success)
+
+		// we have Test object at this point:
+		System.out.println("====================================");
+		System.out.print("Here is the test: \n" + jdomContr.getTest());
+		System.out.println("====================================");
+
+		// now try to parse the valid XML document with validation on (success)
+		jdomContr = new JDOMController(Constants.VALID_XML_FILE);
+		jdomContr.parse(true); // <-- parse with validation on (success)
+
+		// we have Test object at this point:
+		System.out.println("====================================");
+		System.out.print("Here is the test: \n" + jdomContr.getTest());
+		System.out.println("====================================");
+
+		// save test in XML file
+		Test test = jdomContr.getTest();
+		JDOMController.saveXML(test, Constants.VALID_XML_FILE + ".jdom.xml");
+	}
+}

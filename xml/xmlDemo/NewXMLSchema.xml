@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<book xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="NewXMLSchema.xsd">
+	<id>5</id>
+	<name>gyj</name>
+	<genre>horror</genre>
+	<genre>love novell</genre>
+	<genre>love novell</genre>
+	<genre>love novell</genre>
+	<address>
+		<to></to>
+		<copy></copy>
+	</address>
+</book>

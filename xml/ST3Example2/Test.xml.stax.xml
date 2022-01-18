@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns2:Test xmlns:ns2="http://knure.kharkov.ua/jt/st3example" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://knure.kharkov.ua/jt/st3example Test.xsd">
+    <Question>
+        <QuestionText>Вопрос 1</QuestionText>
+        <Answer>Вариант 1.1</Answer>
+        <Answer>Вариант 1.2</Answer>
+        <Answer correct="true">Вариант 1.3</Answer>
+        <Answer>Вариант 1.4</Answer>
+    </Question>
+    <Question>
+        <QuestionText>Вопрос 3</QuestionText>
+        <Answer correct="true">Вариант 3.1</Answer>
+        <Answer>Вариант 3.2</Answer>
+        <Answer correct="true">Вариант 3.3</Answer>
+    </Question>
+    <Question>
+        <QuestionText>Вопрос 2</QuestionText>
+        <Answer>Вариант 2.1</Answer>
+        <Answer correct="true">Вариант 2.2</Answer>
+    </Question>
+</ns2:Test>
